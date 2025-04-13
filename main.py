@@ -69,14 +69,34 @@ def get_proverb_lmstudio():
     Returns:
         str: 取得したことわざ
     """
+    base_url = os.environ.get("LMSTUDIO_BASE_URL", "http://localhost:1234/v1")
+    api_key = os.environ.get("LMSTUDIO_API_KEY", "lmstudio")
+    model_name = os.environ.get("LMSTUDIO_MODEL", "llama3")
+    
     try:
+        import requests
+        try:
+            response = requests.get(f"{base_url}/models", timeout=5)
+            if response.status_code != 200:
+                return f"エラー: LMstudioサーバーが応答していません。ステータスコード: {response.status_code}\n\nLMstudioが起動していることを確認してください。"
+        except requests.exceptions.ConnectionError:
+            return "エラー: LMstudioサーバーに接続できません。\n\nLMstudioが起動していることと、以下の設定を確認してください：\n- LMstudioが起動している\n- サーバーアドレスが正しい（デフォルト: http://localhost:1234/v1）\n- モデルがロードされている"
+        except requests.exceptions.Timeout:
+            return "エラー: LMstudioサーバーへの接続がタイムアウトしました。\n\nLMstudioが正常に動作していることを確認してください。"
+        
         client = OpenAI(
-            base_url="http://localhost:1234/v1",
-            api_key="lmstudio"
+            base_url=base_url,
+            api_key=api_key
         )
         
+        models = client.models.list()
+        available_models = [model.id for model in models.data]
+        
+        if model_name not in available_models:
+            return f"エラー: 指定されたモデル '{model_name}' が見つかりません。\n\n利用可能なモデル: {', '.join(available_models)}\n\n.envファイルでLMSTUDIO_MODEL環境変数を設定するか、LMstudioで正しいモデルをロードしてください。"
+        
         response = client.chat.completions.create(
-            model="llama3",
+            model=model_name,
             messages=[
                 {"role": "system", "content": "あなたは日本のことわざの専門家です。"},
                 {"role": "user", "content": "日本のことわざをランダムに1つ教えてください。ことわざとその意味を簡潔に説明してください。"}
@@ -88,7 +108,7 @@ def get_proverb_lmstudio():
         return proverb
     
     except Exception as e:
-        return f"エラー: LMstudio APIリクエスト中に問題が発生しました: {str(e)}"
+        return f"エラー: LMstudio APIリクエスト中に問題が発生しました: {str(e)}\n\nLMstudioの設定を確認してください。"
 
 def main():
     """

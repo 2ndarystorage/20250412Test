@@ -26,8 +26,17 @@ OpenAI、Google Gemini、またはLMstudio（ローカルモデル）を使用�
 
 3. LMstudioを使用する場合:
    - LMstudioをインストールして起動
+   - LMstudioの「Server」タブで「Start Server」をクリックしてAPIサーバーを起動
    - ローカルサーバーが`http://localhost:1234/v1`で実行されていることを確認
    - モデル（例：llama3）をLMstudioにロードしておく
+   - `.env`ファイルにLMstudio設定を追加（オプション）:
+     ```
+     # LMstudio Configuration
+     LMSTUDIO_BASE_URL=http://localhost:1234/v1
+     LMSTUDIO_API_KEY=lmstudio
+     LMSTUDIO_MODEL=llama3
+     ```
+   - モデル名はLMstudioにロードされているモデルの名前と一致させる必要があります
 
 ## 使用方法
 
