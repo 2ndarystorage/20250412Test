@@ -1,6 +1,9 @@
 import os
 import openai
 from openai import OpenAI
+from dotenv import load_dotenv
+
+load_dotenv()
 
 def get_proverb():
     """
@@ -12,7 +15,7 @@ def get_proverb():
     api_key = os.environ.get("OPENAI_API_KEY")
     
     if not api_key:
-        return "エラー: OPENAI_API_KEYが設定されていません。環境変数にAPIキーを設定してください。"
+        return "エラー: OPENAI_API_KEYが設定されていません。.envファイルにAPIキーを設定してください。"
     
     client = OpenAI(api_key=api_key)
     
