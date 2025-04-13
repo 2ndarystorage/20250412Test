@@ -1,0 +1,68 @@
+From c106a732bb3f664f71b30f58b1a93d9d0006a897 Mon Sep 17 00:00:00 2001
+From: Devin AI <devin-ai-integration[bot]@users.noreply.github.com>
+Date: Sun, 13 Apr 2025 01:10:09 +0000
+Subject: [PATCH] Add OpenAI proverb generator in test/main.py
+
+---
+ main.py | 49 +++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 49 insertions(+)
+ create mode 100644 main.py
+
+diff --git a/main.py b/main.py
+new file mode 100644
+index 0000000..59ce8b1
+--- /dev/null
++++ b/main.py
+@@ -0,0 +1,49 @@
++import os
++import openai
++from openai import OpenAI
++
++def get_proverb():
++    """
++    OpenAIのAPIを使用して日本のことわざを取得する関数
++    
++    Returns:
++        str: 取得したことわざ
++    """
++    api_key = os.environ.get("OPENAI_API_KEY")
++    
++    if not api_key:
++        return "エラー: OPENAI_API_KEYが設定されていません。環境変数にAPIキーを設定してください。"
++    
++    client = OpenAI(api_key=api_key)
++    
++    try:
++        response = client.chat.completions.create(
++            model="gpt-3.5-turbo",
++            messages=[
++                {"role": "system", "content": "あなたは日本のことわざの専門家です。"},
++                {"role": "user", "content": "日本のことわざをランダムに1つ教えてください。ことわざとその意味を簡潔に説明してください。"}
++            ],
++            max_tokens=150
++        )
++        
++        proverb = response.choices[0].message.content
++        return proverb
++    
++    except Exception as e:
++        return f"エラー: APIリクエスト中に問題が発生しました: {str(e)}"
++
++def main():
++    """
++    メイン関数: ことわざを取得して表示する
++    """
++    print("日本のことわざジェネレーター")
++    print("-" * 30)
++    
++    proverb = get_proverb()
++    print(proverb)
++    
++    print("-" * 30)
++    print("終了しました")
++
++if __name__ == "__main__":
++    main()
+-- 
+2.34.1
+
