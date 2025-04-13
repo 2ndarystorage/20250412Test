@@ -62,6 +62,34 @@ def get_proverb_gemini():
     except Exception as e:
         return f"エラー: Gemini APIリクエスト中に問題が発生しました: {str(e)}"
 
+def get_proverb_lmstudio():
+    """
+    LMstudioのローカルモデルを使用して日本のことわざを取得する関数
+    
+    Returns:
+        str: 取得したことわざ
+    """
+    try:
+        client = OpenAI(
+            base_url="http://localhost:1234/v1",
+            api_key="lmstudio"
+        )
+        
+        response = client.chat.completions.create(
+            model="llama3",
+            messages=[
+                {"role": "system", "content": "あなたは日本のことわざの専門家です。"},
+                {"role": "user", "content": "日本のことわざをランダムに1つ教えてください。ことわざとその意味を簡潔に説明してください。"}
+            ],
+            temperature=0.7
+        )
+        
+        proverb = response.choices[0].message.content
+        return proverb
+    
+    except Exception as e:
+        return f"エラー: LMstudio APIリクエスト中に問題が発生しました: {str(e)}"
+
 def main():
     """
     メイン関数: APIを選択してことわざを取得して表示する
@@ -73,9 +101,10 @@ def main():
         print("使用するAPIを選択してください:")
         print("1: OpenAI")
         print("2: Google Gemini")
+        print("3: LMstudio (ローカルモデル)")
         print("q: 終了")
         
-        choice = input("選択 (1/2/q): ")
+        choice = input("選択 (1/2/3/q): ")
         
         if choice == "q":
             print("プログラムを終了します。")
@@ -89,8 +118,12 @@ def main():
             print("\nGoogle Gemini APIを使用します...\n")
             proverb = get_proverb_gemini()
             print(proverb)
+        elif choice == "3":
+            print("\nLMstudio (ローカルモデル) を使用します...\n")
+            proverb = get_proverb_lmstudio()
+            print(proverb)
         else:
-            print("\n無効な選択です。1、2、またはqを入力してください。\n")
+            print("\n無効な選択です。1、2、3、またはqを入力してください。\n")
             continue
         
         print("-" * 30)
