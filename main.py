@@ -82,7 +82,8 @@ def get_proverb_gemini():
     try:
         genai.configure(api_key=api_key)
         
-        model = genai.GenerativeModel('gemini-pro')
+        model = genai.GenerativeModel('gemini-2.0-flash')
+        # model = genai.GenerativeModel('gemini-pro')
         response = model.generate_content(
             "あなたは日本のことわざの専門家です。日本のことわざをランダムに1つ教えてください。ことわざとその意味を簡潔に説明してください。"
         )
