@@ -59,3 +59,19 @@ q. 終了
 - APIキーが設定されていない場合はエラーメッセージが表示されます
 - 各APIの利用には、それぞれのサービスでのアカウント登録とAPIキーの取得が必要です
 - LMstudioオプションを使用するには、LMstudioがローカルで実行されている必要があります
+
+## Program Summary
+
+- OpenAI / Claude / Gemini / LMstudio のいずれかを使って、日本のことわざを1つ生成し意味を表示するCLIツール
+- APIキーは環境変数（.env）から読み込み、対話的にプロバイダを選択する
+
+## How to Use
+
+- 依存関係をインストール（`pip install openai google-generativeai anthropic python-dotenv`）
+- 必要なAPIキーを`.env`に設定
+- 実行: `python main.py`
+- Not verified
+
+## Completion Status
+
+- Usable: 対話型CLIとして一通り動作し、エラー時のメッセージも実装済みだが、テストや配布用パッケージは未整備
