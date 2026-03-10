@@ -75,3 +75,19 @@ q. 終了
 ## Completion Status
 
 - Usable: 対話型CLIとして一通り動作し、エラー時のメッセージも実装済みだが、テストや配布用パッケージは未整備
+
+## Program Summary
+
+- 対話型CLIでAPIプロバイダ（OpenAI / Claude / Gemini / LMstudio）を選択し、日本のことわざと意味を生成して表示する
+- OpenAI互換APIを使ってLMstudioのローカルモデルにも問い合わせ可能（モデル名とURLは環境変数で指定）
+
+## How to Use
+
+- 依存関係をインストール（`pip install openai google-generativeai anthropic python-dotenv requests`）
+- 必要なAPIキーを`.env`に設定（LMstudioは任意）
+- 実行: `python main.py`
+- Not verified
+
+## Completion Status
+
+- Usable: 基本機能とエラーメッセージはあるが、テスト/CIや配布設定がなく、実運用には不足
